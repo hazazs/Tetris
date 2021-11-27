@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import java.awt.Font;
 
 public class MainWindow {
 
@@ -112,6 +113,8 @@ public class MainWindow {
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
 		
 		gameArea = new JTextArea();
+		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
+		gameArea.setHighlighter(null);
 		gameArea.setEditable(false);
 		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
 	}
