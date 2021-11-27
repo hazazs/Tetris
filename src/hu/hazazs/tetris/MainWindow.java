@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,8 +28,9 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow window = new MainWindow();
-					window.frame.setVisible(true);
+					MainWindow mainWindow = new MainWindow();
+					mainWindow.frame.setVisible(true);
+					Executors.newSingleThreadExecutor().execute(new TetrisGame(mainWindow));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -109,9 +111,9 @@ public class MainWindow {
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
 		
-		JTextArea mainWindow = new JTextArea();
-		mainWindow.setEditable(false);
-		frame.getContentPane().add(mainWindow, BorderLayout.CENTER);
+		JTextArea gameArea = new JTextArea();
+		gameArea.setEditable(false);
+		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
 	}
 	
 }
