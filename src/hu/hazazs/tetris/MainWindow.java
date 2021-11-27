@@ -62,7 +62,6 @@ public class MainWindow {
 		gbl_sidePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
 		JPanel sidePanel = new JPanel(gbl_sidePanel);
 		frame.getContentPane().add(sidePanel, BorderLayout.EAST);
-		//sidePanel.setLayout(gbl_sidePanel);
 		
 		JButton startButton = new JButton("START");
 		startButton.addActionListener(new ActionListener() {
