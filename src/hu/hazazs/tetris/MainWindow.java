@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 public class MainWindow {
 
 	private JFrame frame;
+	private JTextArea gameArea;
 
 	/**
 	 * Launch the application.
@@ -111,9 +112,13 @@ public class MainWindow {
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
 		
-		JTextArea gameArea = new JTextArea();
+		gameArea = new JTextArea();
 		gameArea.setEditable(false);
 		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
+	}
+	
+	public JTextArea getGameArea() {
+		return gameArea;
 	}
 	
 }
