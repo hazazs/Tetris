@@ -6,7 +6,7 @@ public final class Level {
 	private final static int HEIGHT = 15;
 	private final String[][] level = new String[HEIGHT][WIDTH];
 	
-	public Level() {
+	Level() {
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int column = 0; column < WIDTH; column++) {
 				level[row][column] = "  ";
@@ -18,6 +18,7 @@ public final class Level {
 		level[HEIGHT - 1][WIDTH - 1] = "██";
 	}
 	
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		for (int row = 0; row < HEIGHT; row++) {

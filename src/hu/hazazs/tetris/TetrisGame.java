@@ -4,11 +4,12 @@ public final class TetrisGame implements Runnable {
 
 	private final MainWindow mainWindow;
 	private final Level level;
-	private Block block;
+	private final Block block;
 
-	public TetrisGame(MainWindow mainWindow) {
+	TetrisGame(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		this.level = new Level();
+		this.block = new Block();
 	}
 
 	// ██

@@ -2,6 +2,7 @@ package hu.hazazs.tetris;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -15,9 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import java.awt.Font;
 
-public class MainWindow {
+public final class MainWindow {
 
 	private JFrame frame;
 	private JTextArea gameArea;
@@ -27,13 +27,14 @@ public class MainWindow {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					MainWindow mainWindow = new MainWindow();
 					mainWindow.frame.setVisible(true);
 					Executors.newSingleThreadExecutor().execute(new TetrisGame(mainWindow));
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception exception) {
+					exception.printStackTrace();
 				}
 			}
 		});
@@ -42,11 +43,11 @@ public class MainWindow {
 	/**
 	 * Create the application.
 	 */
-	public MainWindow() {
+	MainWindow() {
 		initialize();
 	}
-	
-	public JTextArea getGameArea() {
+
+	JTextArea getGameArea() {
 		return gameArea;
 	}
 
@@ -59,20 +60,19 @@ public class MainWindow {
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("src/ico.png"));
 		frame.setTitle("Tetris 1.0");
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		GridBagLayout gbl_sidePanel = new GridBagLayout();
-		gbl_sidePanel.columnWidths = new int[] {0};
-		gbl_sidePanel.rowHeights = new int[] {60, 15, 30, 30, 100, 0};
-		gbl_sidePanel.columnWeights = new double[]{0.0};
-		gbl_sidePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+		gbl_sidePanel.columnWidths = new int[] { 120 };
+		gbl_sidePanel.rowHeights = new int[] { 60, 15, 30, 30, 100, 0 };
+		gbl_sidePanel.columnWeights = new double[] { 0.0 };
+		gbl_sidePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
 		JPanel sidePanel = new JPanel(gbl_sidePanel);
 		frame.getContentPane().add(sidePanel, BorderLayout.EAST);
-		
+
 		JButton startButton = new JButton("START");
 		startButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent event) {
 			}
 		});
 		GridBagConstraints gbc_startButton = new GridBagConstraints();
@@ -81,24 +81,25 @@ public class MainWindow {
 		gbc_startButton.gridx = 0;
 		gbc_startButton.gridy = 0;
 		sidePanel.add(startButton, gbc_startButton);
-		
+
 		JLabel scoreLabel = new JLabel("Score:");
 		GridBagConstraints gbc_scoreLabel = new GridBagConstraints();
-		gbc_scoreLabel.anchor = GridBagConstraints.WEST;
+		gbc_scoreLabel.anchor = GridBagConstraints.SOUTHWEST;
 		gbc_scoreLabel.insets = new Insets(0, 5, 0, 0);
 		gbc_scoreLabel.gridx = 0;
 		gbc_scoreLabel.gridy = 1;
 		sidePanel.add(scoreLabel, gbc_scoreLabel);
-		
-		JTextField scoreTextField = new JTextField("0", 10);
+
+		JTextField scoreTextField = new JTextField("0");
 		scoreTextField.setEditable(false);
 		GridBagConstraints gbc_scoreTextField = new GridBagConstraints();
+		gbc_scoreTextField.anchor = GridBagConstraints.NORTH;
 		gbc_scoreTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_scoreTextField.insets = new Insets(0, 5, 0, 5);
+		gbc_scoreTextField.insets = new Insets(5, 5, 0, 5);
 		gbc_scoreTextField.gridx = 0;
 		gbc_scoreTextField.gridy = 2;
 		sidePanel.add(scoreTextField, gbc_scoreTextField);
-		
+
 		JLabel nextBlockLabel = new JLabel("Next block:");
 		GridBagConstraints gbc_nextBlockLabel = new GridBagConstraints();
 		gbc_nextBlockLabel.anchor = GridBagConstraints.SOUTHWEST;
@@ -106,7 +107,7 @@ public class MainWindow {
 		gbc_nextBlockLabel.gridx = 0;
 		gbc_nextBlockLabel.gridy = 3;
 		sidePanel.add(nextBlockLabel, gbc_nextBlockLabel);
-		
+
 		JTextArea nextBlockTextArea = new JTextArea();
 		nextBlockTextArea.setEditable(false);
 		GridBagConstraints gbc_nextBlockTextArea = new GridBagConstraints();
@@ -115,12 +116,12 @@ public class MainWindow {
 		gbc_nextBlockTextArea.gridx = 0;
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
-		
+
 		gameArea = new JTextArea();
+		gameArea.setEditable(false);
 		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
 		gameArea.setHighlighter(null);
-		gameArea.setEditable(false);
 		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
 	}
-	
+
 }
