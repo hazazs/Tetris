@@ -12,6 +12,7 @@ public final class TetrisGame implements Runnable {
 	}
 
 	// ██
+	// azt hiszem nagy nehezen sikerült
 	@Override
 	public void run() {
 		mainWindow.getGameArea().setText(level.toString());
