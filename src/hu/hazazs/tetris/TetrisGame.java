@@ -11,7 +11,7 @@ public final class TetrisGame implements Runnable {
 		this.level = new Level();
 	}
 
-	// █
+	// ██
 	@Override
 	public void run() {
 		mainWindow.getGameArea().setText(level.toString());
