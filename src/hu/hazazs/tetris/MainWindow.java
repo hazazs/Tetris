@@ -45,13 +45,17 @@ public class MainWindow {
 	public MainWindow() {
 		initialize();
 	}
+	
+	public JTextArea getGameArea() {
+		return gameArea;
+	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 600);
+		frame.setBounds(100, 100, 480, 588);
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("src/ico.png"));
 		frame.setTitle("Tetris 1.0");
@@ -117,10 +121,6 @@ public class MainWindow {
 		gameArea.setHighlighter(null);
 		gameArea.setEditable(false);
 		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
-	}
-	
-	public JTextArea getGameArea() {
-		return gameArea;
 	}
 	
 }
