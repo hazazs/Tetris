@@ -1,6 +1,6 @@
 package hu.hazazs.tetris;
 
-public class TetrisGame implements Runnable {
+public final class TetrisGame implements Runnable {
 	
 	private MainWindow mainWindow;
 	
@@ -8,9 +8,22 @@ public class TetrisGame implements Runnable {
 		this.mainWindow = mainWindow;
 	}
 
+	// █
 	@Override
 	public void run() {
-		mainWindow.getGameArea().setText("HEllo%");
+		String buffer = "";
+		for (int i = 0; i < 5; i++) {
+			mainWindow.getGameArea().setText(buffer);
+			sleep(2);
+		}
+	}
+
+	private void sleep(int seconds) {
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
