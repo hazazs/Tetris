@@ -5,8 +5,8 @@ import java.util.List;
 
 public final class Block {
 
-	private int row = 0;
-	private int column = Level.WIDTH / 2;
+	private final int row = 0;
+	private final int column = Level.WIDTH / 2;
 	private final List<MiniBlock> miniBlocks = new ArrayList<>();
 
 	Block(BlockType blockType) {

@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public final class Level {
 
-	public final static int WIDTH = 10;
-	public final static int HEIGHT = 15;
+	public static final int WIDTH = 10;
+	public static final int HEIGHT = 15;
 	private final String[][] level = new String[HEIGHT][WIDTH];
 
 	Level() {
@@ -14,10 +14,10 @@ public final class Level {
 				level[row][column] = "  ";
 			}
 		}
-		level[0][0] = "██";
-		level[0][WIDTH - 1] = "██";
-		level[HEIGHT - 1][0] = "██";
-		level[HEIGHT - 1][WIDTH - 1] = "██";
+		level[0][0] = MiniBlock.BLOCK;
+		level[0][WIDTH - 1] = MiniBlock.BLOCK;
+		level[HEIGHT - 1][0] = MiniBlock.BLOCK;
+		level[HEIGHT - 1][WIDTH - 1] = MiniBlock.BLOCK;
 	}
 
 	@Override
@@ -32,10 +32,10 @@ public final class Level {
 		return builder.toString();
 	}
 
-	public String toString(Block block) {
+	String toString(Block block) {
 		String[][] copy = Arrays.stream(level).map(String[]::clone).toArray(String[][]::new);
 		for (MiniBlock miniBlock : block.getMiniBlocks()) {
-			copy[block.getRow() + miniBlock.getRowOffset()][block.getColumn() + miniBlock.getColumnOffset()] = "██";
+			copy[block.getRow() + miniBlock.getRowOffset()][block.getColumn() + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
 		}
 		StringBuilder builder = new StringBuilder();
 		for (int row = 0; row < HEIGHT; row++) {

@@ -2,10 +2,11 @@ package hu.hazazs.tetris;
 
 public final class TetrisGame implements Runnable {
 	
-	// MiniBlock.BLOCK static final String
 	// megfordítani a T blokkot
 	// létrehozni egy L blokkot
 	// törölni a négy sarokban levő csalást
+	// két toStringet összemosni (kiemelni a StringBuilderes részt / az egyik lehet private?
+	// az ebben az osztályban levő new Block BlockTypeját randomizálni
 
 	private final MainWindow mainWindow;
 	private final Level level;
@@ -19,7 +20,7 @@ public final class TetrisGame implements Runnable {
 
 	@Override
 	public void run() {
-		mainWindow.getGameArea().setText(level.toString());
+		mainWindow.getGameArea().setText(level.toString(block));
 	}
 
 }

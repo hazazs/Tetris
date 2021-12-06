@@ -43,7 +43,7 @@ public final class MainWindow {
 	/**
 	 * Create the application.
 	 */
-	MainWindow() {
+	private MainWindow() {
 		initialize();
 	}
 
