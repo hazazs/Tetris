@@ -19,8 +19,8 @@ import javax.swing.JTextField;
 
 public final class MainWindow {
 
-	private JFrame frame;
-	private JTextArea gameArea;
+	private final JFrame frame = new JFrame();
+	private final JTextArea gameArea = new JTextArea();
 
 	/**
 	 * Launch the application.
@@ -55,7 +55,6 @@ public final class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
 		frame.setBounds(100, 100, 480, 588);
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("src/ico.png"));
@@ -117,7 +116,6 @@ public final class MainWindow {
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
 
-		gameArea = new JTextArea();
 		gameArea.setEditable(false);
 		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
 		gameArea.setHighlighter(null);

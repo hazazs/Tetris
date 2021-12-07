@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public final class Level {
 
-	public static final int WIDTH = 10;
-	public static final int HEIGHT = 15;
+	static final int WIDTH = 10;
+	static final int HEIGHT = 15;
 	private final String[][] level = new String[HEIGHT][WIDTH];
 
 	Level() {
@@ -20,23 +20,21 @@ public final class Level {
 		level[HEIGHT - 1][WIDTH - 1] = MiniBlock.BLOCK;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		for (int row = 0; row < HEIGHT; row++) {
-			for (int column = 0; column < WIDTH; column++) {
-				builder.append(level[row][column]);
-			}
-			builder.append("\n");
-		}
-		return builder.toString();
-	}
+	//	@Override
+	//	public String toString() {
+	//		StringBuilder builder = new StringBuilder();
+	//		for (int row = 0; row < HEIGHT; row++) {
+	//			for (int column = 0; column < WIDTH; column++) {
+	//				builder.append(level[row][column]);
+	//			}
+	//			builder.append("\n");
+	//		}
+	//		return builder.toString();
+	//	}
 
 	String toString(Block block) {
 		String[][] copy = Arrays.stream(level).map(String[]::clone).toArray(String[][]::new);
-		for (MiniBlock miniBlock : block.getMiniBlocks()) {
-			copy[block.getRow() + miniBlock.getRowOffset()][block.getColumn() + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
-		}
+		block.drawItselfInto(copy);
 		StringBuilder builder = new StringBuilder();
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int column = 0; column < WIDTH; column++) {
