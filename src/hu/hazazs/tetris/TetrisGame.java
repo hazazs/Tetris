@@ -7,7 +7,6 @@ public final class TetrisGame implements Runnable {
 	// törölni a négy sarokban levő csalást
 	// az ebben az osztályban levő new Block BlockTypeját randomizálni
 	// startra induljon
-	// keyListener lamdba
 
 	private final MainWindow mainWindow;
 	private final Level level;
