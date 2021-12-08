@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.concurrent.Executors;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -123,7 +122,7 @@ public final class MainWindow {
 		gbc_nextBlockTextArea.gridx = 0;
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
-		
+
 		gameArea.setEditable(false);
 		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
 		gameArea.setHighlighter(null);
