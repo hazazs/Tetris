@@ -5,9 +5,9 @@ public final class TetrisGame implements Runnable {
 	// megfordítani a T blokkot
 	// létrehozni egy L blokkot
 	// törölni a négy sarokban levő csalást
-	// két toStringet összemosni (a sima toString lehet nem is kell)
 	// az ebben az osztályban levő new Block BlockTypeját randomizálni
-	// while drawItselfInto (és ez is booleant adna vissza) amiben lenne egy isDrawable metódus
+	// startra induljon
+	// keyListener lamdba
 
 	private final MainWindow mainWindow;
 	private final Level level;
@@ -17,14 +17,15 @@ public final class TetrisGame implements Runnable {
 		this.mainWindow = mainWindow;
 		this.level = new Level();
 		this.block = new Block(BlockType.LONG);
+		mainWindow.setTetrisGame(this);
 	}
 
 	@Override
 	public void run() {
-		while (block.isValid()) {
+		while (block.isDrawableInto(level.getLevel())) {
 			draw();
 			sleep();
-			move();
+			drop();
 		}
 	}
 
@@ -40,8 +41,16 @@ public final class TetrisGame implements Runnable {
 		}
 	}
 
-	private void move() {
+	private void drop() {
 		block.moveDown();
+	}
+	
+	void moveBlockToTheLeft() {
+		block.moveLeft();
+	}
+	
+	void moveBlockToTheRight() {
+		block.moveRight();
 	}
 
 }

@@ -9,7 +9,10 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.concurrent.Executors;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,6 +24,7 @@ public final class MainWindow {
 
 	private final JFrame frame = new JFrame();
 	private final JTextArea gameArea = new JTextArea();
+	private TetrisGame tetrisGame;
 
 	/**
 	 * Launch the application.
@@ -49,6 +53,10 @@ public final class MainWindow {
 
 	JTextArea getGameArea() {
 		return gameArea;
+	}
+
+	void setTetrisGame(TetrisGame tetrisGame) {
+		this.tetrisGame = tetrisGame;
 	}
 
 	/**
@@ -115,10 +123,23 @@ public final class MainWindow {
 		gbc_nextBlockTextArea.gridx = 0;
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
-
+		
 		gameArea.setEditable(false);
 		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
 		gameArea.setHighlighter(null);
+		gameArea.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent keyEvent) {
+				switch (keyEvent.getKeyCode()) {
+					case KeyEvent.VK_LEFT:
+						tetrisGame.moveBlockToTheLeft();
+						break;
+					case KeyEvent.VK_RIGHT:
+						tetrisGame.moveBlockToTheRight();
+						break;
+				}
+			}
+		});
 		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
 	}
 

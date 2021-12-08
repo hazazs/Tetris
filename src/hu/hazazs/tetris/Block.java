@@ -51,29 +51,32 @@ public final class Block {
 
 	void drawItselfInto(String[][] copy) {
 		for (MiniBlock miniBlock : getMiniBlocks()) {
-			int row = this.row + miniBlock.getRowOffset();
-			int column = this.column + miniBlock.getColumnOffset();
-			if (isValidCoordinates(row, column)) {
-				copy[row][column] = MiniBlock.BLOCK;
-			}
+			copy[this.row + miniBlock.getRowOffset()][this.column + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
 		}
 	}
 
-	private boolean isValidCoordinates(int row, int column) {
-		return row >= 0 && row < Level.HEIGHT && column >= 0 && column < Level.WIDTH;
-	}
-	
-	void moveDown() {
-		row++;
-	}
-	
-	boolean isValid() {
+	boolean isDrawableInto(String[][] level) {
 		for (MiniBlock miniBlock : getMiniBlocks()) {
-			if (!isValidCoordinates(this.row + miniBlock.getRowOffset(), this.column + miniBlock.getColumnOffset())) {
+			int row = this.row + miniBlock.getRowOffset();
+			int column = this.column + miniBlock.getColumnOffset();
+			if (row < 0 || row >= Level.HEIGHT || column < 0 || column >= Level.WIDTH
+					|| MiniBlock.BLOCK.equals(level[row][column])) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	void moveDown() {
+		row++;
+	}
+
+	void moveLeft() {
+		column--;
+	}
+
+	void moveRight() {
+		column++;
 	}
 
 }
