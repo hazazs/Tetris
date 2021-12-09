@@ -15,13 +15,13 @@ public final class TetrisGame implements Runnable {
 	TetrisGame(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		this.level = new Level();
-		this.block = new Block(BlockType.LONG);
+		this.block = new Block(BlockType.Z);
 		mainWindow.setTetrisGame(this);
 	}
 
 	@Override
 	public void run() {
-		while (block.isDrawableInto(level.getLevel())) {
+		while (!block.isDrawableInto(level.getLevel())) {
 			draw();
 			sleep();
 			drop();
@@ -43,13 +43,19 @@ public final class TetrisGame implements Runnable {
 	private void drop() {
 		block.moveDown();
 	}
-	
+
 	void moveBlockToTheLeft() {
-		block.moveLeft();
+		if (!block.isBlockedFromTheLeft(level.getLevel())) {
+			block.moveLeft();
+			draw();
+		}
 	}
-	
+
 	void moveBlockToTheRight() {
-		block.moveRight();
+		if (!block.isBlockedFromTheRight(level.getLevel())) {
+			block.moveRight();
+			draw();
+		}
 	}
 
 }

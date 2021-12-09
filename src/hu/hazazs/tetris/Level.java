@@ -18,8 +18,12 @@ public final class Level {
 		level[0][WIDTH - 1] = MiniBlock.BLOCK;
 		level[HEIGHT - 1][0] = MiniBlock.BLOCK;
 		level[HEIGHT - 1][WIDTH - 1] = MiniBlock.BLOCK;
-		//level[5][3] = MiniBlock.BLOCK;
-		//level[5][7] = MiniBlock.BLOCK;
+		level[5][3] = MiniBlock.BLOCK;
+		level[6][3] = MiniBlock.BLOCK;
+		level[7][3] = MiniBlock.BLOCK;
+		level[8][3] = MiniBlock.BLOCK;
+		level[9][3] = MiniBlock.BLOCK;
+		level[10][7] = MiniBlock.BLOCK;
 		//level[12][5] = MiniBlock.BLOCK;
 	}
 
