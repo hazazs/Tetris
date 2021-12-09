@@ -7,6 +7,7 @@ public final class TetrisGame implements Runnable {
 	// törölni a négy sarokban levő csalást
 	// az ebben az osztályban levő new Block BlockTypeját randomizálni
 	// startra induljon
+	// valahogy a blockLeft blockRight reachedBottom metódusokat egybegyúrni, kiemelni valami absztrakciót
 
 	private final MainWindow mainWindow;
 	private final Level level;
@@ -21,7 +22,7 @@ public final class TetrisGame implements Runnable {
 
 	@Override
 	public void run() {
-		while (!block.isDrawableInto(level.getLevel())) {
+		while (!block.hasReachedTheBottom(level.getLevel())) {
 			draw();
 			sleep();
 			drop();
