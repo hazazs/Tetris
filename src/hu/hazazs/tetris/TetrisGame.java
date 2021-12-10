@@ -2,12 +2,13 @@ package hu.hazazs.tetris;
 
 public final class TetrisGame implements Runnable {
 
-	// megfordítani a T blokkot
-	// létrehozni egy L blokkot
-	// törölni a négy sarokban levő csalást
+	// törölni a csalásokat
 	// az ebben az osztályban levő new Block BlockTypeját randomizálni
-	// startra induljon
-	// valahogy a blockLeft blockRight reachedBottom metódusokat egybegyúrni, kiemelni valami absztrakciót
+	// startra induljon, ha gameover, akkor restart
+	// a jobbra balra mozgatás HATÁSÁT nem tudja lekövetni az 1 másodperces várakozás alatt (meg kellene valahogy szakadni a while ciklusnak)
+
+	// valahogy a második drawt kiszedni
+	// valahogy a blockLeft blockRight reachedBottom metódusokat egybegyúrni, kiemelni valami absztrakciót (a negyedik ráadásul feleslegesnek tűnik)
 
 	private final MainWindow mainWindow;
 	private final Level level;
@@ -15,18 +16,22 @@ public final class TetrisGame implements Runnable {
 
 	TetrisGame(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
-		this.level = new Level();
-		this.block = new Block(BlockType.Z);
+		level = new Level();
+		block = new Block(level.getLevel(), BlockType.Z);
 		mainWindow.setTetrisGame(this);
 	}
 
 	@Override
 	public void run() {
-		while (!block.hasReachedTheBottom(level.getLevel())) {
+		while (!block.hasReachedTheBottom()) {
 			draw();
 			sleep();
 			drop();
 		}
+		if (block.isBlockFree()) {
+			draw();
+		}
+		mainWindow.getGameArea().setEnabled(false);
 	}
 
 	private void draw() {
@@ -46,17 +51,13 @@ public final class TetrisGame implements Runnable {
 	}
 
 	void moveBlockToTheLeft() {
-		if (!block.isBlockedFromTheLeft(level.getLevel())) {
-			block.moveLeft();
-			draw();
-		}
+		block.moveLeft();
+		draw();
 	}
 
 	void moveBlockToTheRight() {
-		if (!block.isBlockedFromTheRight(level.getLevel())) {
-			block.moveRight();
-			draw();
-		}
+		block.moveRight();
+		draw();
 	}
 
 }
