@@ -6,6 +6,9 @@ public final class TetrisGame implements Runnable {
 	// az ebben az osztályban levő new Block BlockTypeját randomizálni
 	// startra induljon, ha gameover, akkor restart
 	// a jobbra balra mozgatás HATÁSÁT nem tudja lekövetni az 1 másodperces várakozás alatt (meg kellene valahogy szakadni a while ciklusnak)
+	// [5][3] gyors balra jobbra kombináció után simán megyünk tovább
+	// [5][3] gyors balra után továbbesünk egyet
+	// [10][7] gyors jobbra után szimplán átesünk az elemen
 
 	// valahogy a második drawt kiszedni
 	// valahogy a blockLeft blockRight reachedBottom metódusokat egybegyúrni, kiemelni valami absztrakciót (a negyedik ráadásul feleslegesnek tűnik)
@@ -28,9 +31,7 @@ public final class TetrisGame implements Runnable {
 			sleep();
 			drop();
 		}
-		if (block.isBlockFree()) {
-			draw();
-		}
+		draw();
 		mainWindow.getGameArea().setEnabled(false);
 	}
 

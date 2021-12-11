@@ -1,6 +1,7 @@
 package hu.hazazs.tetris;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class Block {
@@ -59,10 +60,12 @@ public final class Block {
 		return miniBlocks;
 	}
 
-	void drawItselfInto(String[][] copy) {
+	String[][] drawItselfIntoTheLevel() {
+		String[][] copy = Arrays.stream(level).map(String[]::clone).toArray(String[][]::new);
 		for (MiniBlock miniBlock : getMiniBlocks()) {
 			copy[row + miniBlock.getRowOffset()][column + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
 		}
+		return copy;
 	}
 
 	void moveDown() {
@@ -112,17 +115,6 @@ public final class Block {
 			}
 		}
 		return false;
-	}
-	
-	boolean isBlockFree() {
-		for (MiniBlock miniBlock : getMiniBlocks()) {
-			int row = this.row + miniBlock.getRowOffset();
-			int column = this.column + miniBlock.getColumnOffset();
-			if (MiniBlock.BLOCK.equals(level[row][column])) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 }
