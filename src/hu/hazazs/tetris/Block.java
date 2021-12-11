@@ -60,7 +60,7 @@ public final class Block {
 		return miniBlocks;
 	}
 
-	String[][] drawItselfIntoTheLevel() {
+	String[][] drawIntoCopy() {
 		String[][] copy = Arrays.stream(level).map(String[]::clone).toArray(String[][]::new);
 		for (MiniBlock miniBlock : getMiniBlocks()) {
 			copy[row + miniBlock.getRowOffset()][column + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;

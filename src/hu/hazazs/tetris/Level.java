@@ -30,7 +30,7 @@ public final class Level {
 	}
 
 	String toString(Block block) {
-		String[][] copy = block.drawItselfIntoTheLevel();
+		String[][] copy = block.drawIntoCopy();
 		StringBuilder builder = new StringBuilder();
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int column = 0; column < WIDTH; column++) {
