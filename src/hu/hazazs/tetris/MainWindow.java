@@ -62,7 +62,7 @@ public final class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame.setBounds(100, 100, 480, 588);
+		frame.setBounds(100, 100, 476, 588);
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("src/ico.png"));
 		frame.setTitle("Tetris 1.0");
