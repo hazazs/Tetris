@@ -11,7 +11,7 @@ public final class TetrisGame implements Runnable {
 	// [10][7] gyors jobbra után szimplán átesünk az elemen
 
 	// valahogy a második drawt kiszedni
-	// valahogy a blockLeft blockRight reachedBottom metódusokat egybegyúrni, kiemelni valami absztrakciót (a negyedik ráadásul feleslegesnek tűnik)
+	// valahogy a blockLeft blockRight reachedBottom metódusokat egybegyúrni, kiemelni valami absztrakciót
 
 	private final MainWindow mainWindow;
 	private final Level level;
