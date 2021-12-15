@@ -56,13 +56,9 @@ public final class Block {
 		}
 	}
 
-	private List<MiniBlock> getMiniBlocks() {
-		return miniBlocks;
-	}
-
 	String[][] drawIntoCopy() {
 		String[][] copy = Arrays.stream(level).map(String[]::clone).toArray(String[][]::new);
-		for (MiniBlock miniBlock : getMiniBlocks()) {
+		for (MiniBlock miniBlock : miniBlocks) {
 			copy[row + miniBlock.getRowOffset()][column + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
 		}
 		return copy;
@@ -85,7 +81,7 @@ public final class Block {
 	}
 
 	boolean hasReachedTheBottom() {
-		for (MiniBlock miniBlock : getMiniBlocks()) {
+		for (MiniBlock miniBlock : miniBlocks) {
 			int row = this.row + miniBlock.getRowOffset();
 			int column = this.column + miniBlock.getColumnOffset();
 			if (row == Level.HEIGHT - 1 || MiniBlock.BLOCK.equals(level[row + 1][column])) {
@@ -96,7 +92,7 @@ public final class Block {
 	}
 
 	private boolean isBlockedFromTheLeft() {
-		for (MiniBlock miniBlock : getMiniBlocks()) {
+		for (MiniBlock miniBlock : miniBlocks) {
 			int row = this.row + miniBlock.getRowOffset();
 			int column = this.column + miniBlock.getColumnOffset();
 			if (column == 0 || MiniBlock.BLOCK.equals(level[row][column - 1])) {
@@ -107,7 +103,7 @@ public final class Block {
 	}
 
 	private boolean isBlockedFromTheRight() {
-		for (MiniBlock miniBlock : getMiniBlocks()) {
+		for (MiniBlock miniBlock : miniBlocks) {
 			int row = this.row + miniBlock.getRowOffset();
 			int column = this.column + miniBlock.getColumnOffset();
 			if (column == Level.WIDTH - 1 || MiniBlock.BLOCK.equals(level[row][column + 1])) {

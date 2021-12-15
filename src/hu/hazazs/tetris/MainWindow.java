@@ -136,6 +136,8 @@ public final class MainWindow {
 					case KeyEvent.VK_RIGHT:
 						tetrisGame.moveBlockToTheRight();
 						break;
+					case KeyEvent.VK_DOWN:
+						tetrisGame.dropBlock();
 				}
 			}
 		});

@@ -16,6 +16,7 @@ public final class Level {
 		level[0][WIDTH - 1] = MiniBlock.BLOCK;
 		level[HEIGHT - 1][0] = MiniBlock.BLOCK;
 		level[HEIGHT - 1][WIDTH - 1] = MiniBlock.BLOCK;
+
 		level[5][1] = MiniBlock.BLOCK;
 		level[5][3] = MiniBlock.BLOCK;
 		level[6][3] = MiniBlock.BLOCK;
@@ -23,6 +24,14 @@ public final class Level {
 		level[8][3] = MiniBlock.BLOCK;
 		level[9][3] = MiniBlock.BLOCK;
 		level[10][7] = MiniBlock.BLOCK;
+
+		//		level[14][0] = MiniBlock.BLOCK;
+		//		level[14][1] = MiniBlock.BLOCK;
+		//		level[14][2] = MiniBlock.BLOCK;
+		//		level[14][3] = MiniBlock.BLOCK;
+		//		level[13][2] = MiniBlock.BLOCK;
+		//		level[13][3] = MiniBlock.BLOCK;
+		//		level[12][3] = MiniBlock.BLOCK;
 	}
 
 	String[][] getLevel() {
