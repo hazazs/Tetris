@@ -64,6 +64,12 @@ public final class Block {
 		return copy;
 	}
 
+	void drawIntoLevel() {
+		for (MiniBlock miniBlock : miniBlocks) {
+			level[row + miniBlock.getRowOffset() - 1][column + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
+		}
+	}
+
 	void moveDown() {
 		row++;
 	}
@@ -84,7 +90,7 @@ public final class Block {
 		for (MiniBlock miniBlock : miniBlocks) {
 			int row = this.row + miniBlock.getRowOffset();
 			int column = this.column + miniBlock.getColumnOffset();
-			if (row == Level.HEIGHT - 1 || MiniBlock.BLOCK.equals(level[row + 1][column])) {
+			if (row == Level.HEIGHT || MiniBlock.BLOCK.equals(level[row][column])) {
 				return true;
 			}
 		}

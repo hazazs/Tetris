@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,6 +24,8 @@ public final class MainWindow {
 
 	private final JFrame frame = new JFrame();
 	private final JTextArea gameArea = new JTextArea();
+	private final JButton controlButton = new JButton("START");
+	private final JTextField scoreTextField = new JTextField("0");
 	private TetrisGame tetrisGame;
 
 	/**
@@ -35,7 +38,6 @@ public final class MainWindow {
 				try {
 					MainWindow mainWindow = new MainWindow();
 					mainWindow.frame.setVisible(true);
-					Executors.newSingleThreadExecutor().execute(new TetrisGame(mainWindow));
 				} catch (Exception exception) {
 					exception.printStackTrace();
 				}
@@ -52,6 +54,14 @@ public final class MainWindow {
 
 	JTextArea getGameArea() {
 		return gameArea;
+	}
+
+	JButton getControlButton() {
+		return controlButton;
+	}
+	
+	JTextField getScoreTextField() {
+		return scoreTextField;
 	}
 
 	void setTetrisGame(TetrisGame tetrisGame) {
@@ -75,18 +85,37 @@ public final class MainWindow {
 		JPanel sidePanel = new JPanel(gbl_sidePanel);
 		frame.getContentPane().add(sidePanel, BorderLayout.EAST);
 
-		JButton startButton = new JButton("START");
-		startButton.addActionListener(new ActionListener() {
+		controlButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
+				switch (controlButton.getText()) {
+					case "START":
+						startGame();
+						controlButton.setText("PAUSE");
+						break;
+					case "PAUSE":
+						tetrisGame.pauseAndResume();
+						controlButton.setText("RESUME");
+						break;
+					case "RESUME":
+						tetrisGame.pauseAndResume();
+						controlButton.setText("PAUSE");
+						break;
+					case "RESTART":
+						startGame();
+						gameArea.setEnabled(true);
+						controlButton.setText("PAUSE");
+						break;
+				}
+				gameArea.requestFocusInWindow();
 			}
 		});
-		GridBagConstraints gbc_startButton = new GridBagConstraints();
-		gbc_startButton.anchor = GridBagConstraints.NORTH;
-		gbc_startButton.insets = new Insets(10, 0, 0, 0);
-		gbc_startButton.gridx = 0;
-		gbc_startButton.gridy = 0;
-		sidePanel.add(startButton, gbc_startButton);
+		GridBagConstraints gbc_controlButton = new GridBagConstraints();
+		gbc_controlButton.anchor = GridBagConstraints.NORTH;
+		gbc_controlButton.insets = new Insets(10, 0, 0, 0);
+		gbc_controlButton.gridx = 0;
+		gbc_controlButton.gridy = 0;
+		sidePanel.add(controlButton, gbc_controlButton);
 
 		JLabel scoreLabel = new JLabel("Score:");
 		GridBagConstraints gbc_scoreLabel = new GridBagConstraints();
@@ -96,7 +125,6 @@ public final class MainWindow {
 		gbc_scoreLabel.gridy = 1;
 		sidePanel.add(scoreLabel, gbc_scoreLabel);
 
-		JTextField scoreTextField = new JTextField("0");
 		scoreTextField.setEditable(false);
 		GridBagConstraints gbc_scoreTextField = new GridBagConstraints();
 		gbc_scoreTextField.anchor = GridBagConstraints.NORTH;
@@ -129,19 +157,25 @@ public final class MainWindow {
 		gameArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent keyEvent) {
-				switch (keyEvent.getKeyCode()) {
-					case KeyEvent.VK_LEFT:
-						tetrisGame.moveBlockToTheLeft();
-						break;
-					case KeyEvent.VK_RIGHT:
-						tetrisGame.moveBlockToTheRight();
-						break;
-					case KeyEvent.VK_DOWN:
-						tetrisGame.dropBlock();
+				if (Objects.nonNull(tetrisGame)) {
+					switch (keyEvent.getKeyCode()) {
+						case KeyEvent.VK_LEFT:
+							tetrisGame.moveBlockToTheLeft();
+							break;
+						case KeyEvent.VK_RIGHT:
+							tetrisGame.moveBlockToTheRight();
+							break;
+						case KeyEvent.VK_DOWN:
+							tetrisGame.dropBlock();
+					}
 				}
 			}
 		});
 		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
+	}
+
+	private void startGame() {
+		Executors.newSingleThreadExecutor().execute(new TetrisGame(this));
 	}
 
 }

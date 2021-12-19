@@ -24,14 +24,17 @@ public final class Level {
 		level[8][3] = MiniBlock.BLOCK;
 		level[9][3] = MiniBlock.BLOCK;
 		level[10][7] = MiniBlock.BLOCK;
-
-		//		level[14][0] = MiniBlock.BLOCK;
-		//		level[14][1] = MiniBlock.BLOCK;
-		//		level[14][2] = MiniBlock.BLOCK;
-		//		level[14][3] = MiniBlock.BLOCK;
-		//		level[13][2] = MiniBlock.BLOCK;
-		//		level[13][3] = MiniBlock.BLOCK;
-		//		level[12][3] = MiniBlock.BLOCK;
+		
+		level[14][0] = MiniBlock.BLOCK;
+		level[14][1] = MiniBlock.BLOCK;
+		level[14][2] = MiniBlock.BLOCK;
+		level[14][3] = MiniBlock.BLOCK;
+		level[14][7] = MiniBlock.BLOCK;
+		level[14][8] = MiniBlock.BLOCK;
+		level[14][9] = MiniBlock.BLOCK;
+		level[13][2] = MiniBlock.BLOCK;
+		level[13][3] = MiniBlock.BLOCK;
+		level[12][3] = MiniBlock.BLOCK;
 	}
 
 	String[][] getLevel() {
@@ -48,6 +51,34 @@ public final class Level {
 			builder.append("\n");
 		}
 		return builder.toString();
+	}
+
+	int checkFullRows() {
+		int fullRowCounter = 0;
+		for (int row = 0; row < Level.HEIGHT; row++) {
+			if (isFullRow(row)) {
+				fullRowCounter++;
+				deleteAndDropByOneUntil(row);
+			}
+		}
+		return fullRowCounter;
+	}
+
+	private boolean isFullRow(int row) {
+		for (int column = 0; column < Level.WIDTH; column++) {
+			if (!MiniBlock.BLOCK.equals(level[row][column])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void deleteAndDropByOneUntil(int startRow) {
+		for (int row = startRow; row >= 0; row--) {
+			for (int column = 0; column < Level.WIDTH; column++) {
+				level[row][column] = row == 0 ? "  " : level[row - 1][column];
+			}
+		}
 	}
 
 }
