@@ -3,7 +3,7 @@ package hu.hazazs.tetris;
 public final class Level {
 
 	static final int WIDTH = 10;
-	static final int HEIGHT = 15;
+	static final int HEIGHT = 18;
 	private final String[][] level = new String[HEIGHT][WIDTH];
 
 	Level() {
@@ -24,7 +24,7 @@ public final class Level {
 		level[8][3] = MiniBlock.BLOCK;
 		level[9][3] = MiniBlock.BLOCK;
 		level[10][7] = MiniBlock.BLOCK;
-		
+
 		level[14][0] = MiniBlock.BLOCK;
 		level[14][1] = MiniBlock.BLOCK;
 		level[14][2] = MiniBlock.BLOCK;

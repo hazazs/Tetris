@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public final class MainWindow {
 
@@ -26,6 +27,7 @@ public final class MainWindow {
 	private final JTextArea gameArea = new JTextArea();
 	private final JButton controlButton = new JButton("START");
 	private final JTextField scoreTextField = new JTextField("0");
+	private final JTextArea nextBlockTextArea = new JTextArea();
 	private TetrisGame tetrisGame;
 
 	/**
@@ -59,9 +61,13 @@ public final class MainWindow {
 	JButton getControlButton() {
 		return controlButton;
 	}
-	
+
 	JTextField getScoreTextField() {
 		return scoreTextField;
+	}
+
+	JTextArea getNextBlockTextArea() {
+		return nextBlockTextArea;
 	}
 
 	void setTetrisGame(TetrisGame tetrisGame) {
@@ -72,13 +78,35 @@ public final class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame.setBounds(100, 100, 476, 588);
+		frame.setBounds(100, 100, 487, 699);
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("src/ico.png"));
 		frame.setTitle("Tetris 1.0");
 
+		gameArea.setEditable(false);
+		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
+		gameArea.setHighlighter(null);
+		gameArea.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent keyEvent) {
+				if (Objects.nonNull(tetrisGame)) {
+					switch (keyEvent.getKeyCode()) {
+						case KeyEvent.VK_LEFT:
+							tetrisGame.moveBlockToTheLeft();
+							break;
+						case KeyEvent.VK_RIGHT:
+							tetrisGame.moveBlockToTheRight();
+							break;
+						case KeyEvent.VK_DOWN:
+							tetrisGame.dropBlock();
+					}
+				}
+			}
+		});
+		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
+
 		GridBagLayout gbl_sidePanel = new GridBagLayout();
-		gbl_sidePanel.columnWidths = new int[] { 120 };
+		gbl_sidePanel.columnWidths = new int[] { 131 };
 		gbl_sidePanel.rowHeights = new int[] { 60, 15, 30, 30, 100, 0 };
 		gbl_sidePanel.columnWeights = new double[] { 0.0 };
 		gbl_sidePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
@@ -142,36 +170,16 @@ public final class MainWindow {
 		gbc_nextBlockLabel.gridy = 3;
 		sidePanel.add(nextBlockLabel, gbc_nextBlockLabel);
 
-		JTextArea nextBlockTextArea = new JTextArea();
 		nextBlockTextArea.setEditable(false);
+		nextBlockTextArea.setFont(new Font("Consolas", Font.BOLD, 28));
+		nextBlockTextArea.setHighlighter(null);
+		nextBlockTextArea.setBackground(UIManager.getColor("Button.background"));
 		GridBagConstraints gbc_nextBlockTextArea = new GridBagConstraints();
 		gbc_nextBlockTextArea.fill = GridBagConstraints.BOTH;
 		gbc_nextBlockTextArea.insets = new Insets(5, 5, 0, 5);
 		gbc_nextBlockTextArea.gridx = 0;
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
-
-		gameArea.setEditable(false);
-		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
-		gameArea.setHighlighter(null);
-		gameArea.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent keyEvent) {
-				if (Objects.nonNull(tetrisGame)) {
-					switch (keyEvent.getKeyCode()) {
-						case KeyEvent.VK_LEFT:
-							tetrisGame.moveBlockToTheLeft();
-							break;
-						case KeyEvent.VK_RIGHT:
-							tetrisGame.moveBlockToTheRight();
-							break;
-						case KeyEvent.VK_DOWN:
-							tetrisGame.dropBlock();
-					}
-				}
-			}
-		});
-		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
 	}
 
 	private void startGame() {

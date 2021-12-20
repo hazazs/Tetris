@@ -2,6 +2,6 @@ package hu.hazazs.tetris;
 
 public enum BlockType {
 
-	LONG, SQUARE, Z, T, L
+	LONG, SQUARE, Z, Z_MIRRORED, T, L, L_MIRRORED
 
 }

@@ -37,6 +37,14 @@ public final class Block {
 				miniBlocks.add(new MiniBlock(1, 0));
 				miniBlocks.add(new MiniBlock(1, 1));
 				break;
+			case Z_MIRRORED:
+				//   ▓▓██
+				// ████
+				miniBlocks.add(new MiniBlock(0, 0));
+				miniBlocks.add(new MiniBlock(0, 1));
+				miniBlocks.add(new MiniBlock(1, -1));
+				miniBlocks.add(new MiniBlock(1, 0));
+				break;
 			case T:
 				// ██▓▓██
 				//   ██
@@ -52,6 +60,14 @@ public final class Block {
 				miniBlocks.add(new MiniBlock(0, -1));
 				miniBlocks.add(new MiniBlock(0, 1));
 				miniBlocks.add(new MiniBlock(1, -1));
+				break;
+			case L_MIRRORED:
+				// ██▓▓██
+				//     ██
+				miniBlocks.add(new MiniBlock(0, 0));
+				miniBlocks.add(new MiniBlock(0, -1));
+				miniBlocks.add(new MiniBlock(0, 1));
+				miniBlocks.add(new MiniBlock(1, 1));
 				break;
 		}
 	}
@@ -113,6 +129,51 @@ public final class Block {
 			int row = this.row + miniBlock.getRowOffset();
 			int column = this.column + miniBlock.getColumnOffset();
 			if (column == Level.WIDTH - 1 || MiniBlock.BLOCK.equals(level[row][column + 1])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		int minRow = Integer.MAX_VALUE;
+		int maxRow = Integer.MIN_VALUE;
+		int minColumn = Integer.MAX_VALUE;
+		int maxColumn = Integer.MIN_VALUE;
+		for (MiniBlock miniBlock : miniBlocks) {
+			if (miniBlock.getRowOffset() < minRow) {
+				minRow = miniBlock.getRowOffset();
+			}
+			if (miniBlock.getRowOffset() > maxRow) {
+				maxRow = miniBlock.getRowOffset();
+			}
+			if (miniBlock.getColumnOffset() < minColumn) {
+				minColumn = miniBlock.getColumnOffset();
+			}
+			if (miniBlock.getColumnOffset() > maxColumn) {
+				maxColumn = miniBlock.getColumnOffset();
+			}
+		}
+		for (int row = minRow; row <= maxRow; row++) {
+			for (int column = minColumn; column <= maxColumn; column++) {
+				if (isMiniBlock(row, column)) {
+					builder.append(MiniBlock.BLOCK);
+				} else {
+					builder.append("  ");
+				}
+			}
+			if (row != maxRow) {
+				builder.append("\n");
+			}
+		}
+		return builder.toString();
+	}
+
+	private boolean isMiniBlock(int row, int column) {
+		for (MiniBlock miniBlock : miniBlocks) {
+			if (miniBlock.getRowOffset() == row && miniBlock.getColumnOffset() == column) {
 				return true;
 			}
 		}
