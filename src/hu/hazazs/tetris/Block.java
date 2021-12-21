@@ -3,12 +3,13 @@ package hu.hazazs.tetris;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public final class Block {
 
 	private final String[][] level;
 	private int row = 0;
-	private int column = Level.WIDTH / 2;
+	private int column = 4;
 	private final List<MiniBlock> miniBlocks = new ArrayList<>();
 
 	Block(String[][] level, BlockType blockType) {
@@ -22,8 +23,8 @@ public final class Block {
 				miniBlocks.add(new MiniBlock(0, 2));
 				break;
 			case SQUARE:
-				// ▓▓██
-				// ████
+				//   ▓▓██
+				//   ████
 				miniBlocks.add(new MiniBlock(0, 0));
 				miniBlocks.add(new MiniBlock(0, 1));
 				miniBlocks.add(new MiniBlock(1, 0));
@@ -137,47 +138,18 @@ public final class Block {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		int minRow = Integer.MAX_VALUE;
-		int maxRow = Integer.MIN_VALUE;
-		int minColumn = Integer.MAX_VALUE;
-		int maxColumn = Integer.MIN_VALUE;
+		String[][] drawBuffer = new String[2][4];
 		for (MiniBlock miniBlock : miniBlocks) {
-			if (miniBlock.getRowOffset() < minRow) {
-				minRow = miniBlock.getRowOffset();
-			}
-			if (miniBlock.getRowOffset() > maxRow) {
-				maxRow = miniBlock.getRowOffset();
-			}
-			if (miniBlock.getColumnOffset() < minColumn) {
-				minColumn = miniBlock.getColumnOffset();
-			}
-			if (miniBlock.getColumnOffset() > maxColumn) {
-				maxColumn = miniBlock.getColumnOffset();
-			}
+			drawBuffer[0 + miniBlock.getRowOffset()][1 + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
 		}
-		for (int row = minRow; row <= maxRow; row++) {
-			for (int column = minColumn; column <= maxColumn; column++) {
-				if (isMiniBlock(row, column)) {
-					builder.append(MiniBlock.BLOCK);
-				} else {
-					builder.append("  ");
-				}
+		StringBuilder builder = new StringBuilder();
+		for (int row = 0; row < drawBuffer.length; row++) {
+			for (int column = 0; column < drawBuffer[0].length; column++) {
+				builder.append(Objects.isNull(drawBuffer[row][column]) ? "  " : drawBuffer[row][column]);
 			}
-			if (row != maxRow) {
-				builder.append("\n");
-			}
+			builder.append("\n");
 		}
 		return builder.toString();
-	}
-
-	private boolean isMiniBlock(int row, int column) {
-		for (MiniBlock miniBlock : miniBlocks) {
-			if (miniBlock.getRowOffset() == row && miniBlock.getColumnOffset() == column) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

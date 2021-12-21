@@ -4,18 +4,18 @@ import java.util.Random;
 
 public final class TetrisGame implements Runnable {
 
-	// block toStringen még alakítani
-	// game over esetén az utolsó még kirajzolódik felülírva a pályát (és következő elem is generálódik - nem biztos, hogy ez kell)
-	// első sortól induljanak, ami kilóg esetlegesen forgatáskor az szimplán ne látszódjon (oldalra elvileg nem tud kilógni forgatáskor) (balról milyen behúzással jelennek meg?)
-
-	// törölni a csalásokat
-	// GAME OVER felirat + indulóképernyő
+	// a két toString StringBuilderes részét összeolvasztani
+	// Objects.isNull-okat megszüntetni
+	
 	// forgatás logika (felfelé gombra forgat)
+	// ami kilóg esetlegesen forgatáskor (csak felül (alul nem?)) az szimplán ne látszódjon (balról és jobbról ha kilógna forgatás után akkor nem engedjük forgatni)
 	// gyorsuljon a pontok növekedésével
+	// SPACE-re azonnal lemegy, lefelé csak begyorsít (és azonnal reagál, nincs 1 másodperces delay)
+	// GAME OVER felirat + indulóképernyő
 	// különböző színű blokkok
-	// SPACE-re azonnal lemegy, lefelé csak begyorsít (és azonnal reagál)
 
 	// miért alacsonyabbak az első sorok mind a gameAreaban, mind a nextBlockTextAreaban? (vagy a többi hosszabb ?)
+	// miért lesz darabos a nextBlock kijelöléskor? (eleve nem is lehetne kijelölni)
 	// valahogy a isBlockedFromTheLeft-Right hasReachedTheBottom metódusokat egybegyúrni, kiemelni valami absztrakciót (interface + execute())
 
 	private final MainWindow mainWindow;
@@ -29,7 +29,7 @@ public final class TetrisGame implements Runnable {
 	TetrisGame(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		level = new Level();
-		nextBlock = new Block(level.getLevel(), getRandomType());
+		nextBlock = getRandomBlock();
 		mainWindow.setTetrisGame(this);
 	}
 
@@ -38,9 +38,11 @@ public final class TetrisGame implements Runnable {
 		while (true) {
 			block = nextBlock;
 			if (block.hasReachedTheBottom()) {
+				draw();
+				mainWindow.getNextBlockTextArea().setText("");
 				break;
 			}
-			nextBlock = new Block(level.getLevel(), getRandomType());
+			nextBlock = getRandomBlock();
 			mainWindow.getNextBlockTextArea().setText(nextBlock.toString());
 			do {
 				draw();
@@ -58,8 +60,9 @@ public final class TetrisGame implements Runnable {
 		mainWindow.getGameArea().requestFocusInWindow();
 	}
 
-	private BlockType getRandomType() {
-		return BlockType.values()[new Random().nextInt(BlockType.values().length)];
+	private Block getRandomBlock() {
+		BlockType randomBlockType = BlockType.values()[new Random().nextInt(BlockType.values().length)];
+		return new Block(level.getLevel(), randomBlockType);
 	}
 
 	private void draw() {
