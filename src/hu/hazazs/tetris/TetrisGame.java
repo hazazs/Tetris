@@ -5,7 +5,7 @@ import java.util.Random;
 public final class TetrisGame implements Runnable {
 
 	// a két toString StringBuilderes részét összeolvasztani
-	// Objects.isNull-okat megszüntetni
+	// Objects.isNull-okat megszüntetni + tetrisGame != null
 	
 	// forgatás logika (felfelé gombra forgat)
 	// ami kilóg esetlegesen forgatáskor (csak felül (alul nem?)) az szimplán ne látszódjon (balról és jobbról ha kilógna forgatás után akkor nem engedjük forgatni)
