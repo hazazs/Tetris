@@ -4,13 +4,10 @@ import java.util.Random;
 
 public final class TetrisGame implements Runnable {
 
-	// a két toString StringBuilderes részét összeolvasztani
-	// Objects.isNull-okat megszüntetni + tetrisGame != null
-	
 	// forgatás logika (felfelé gombra forgat)
 	// ami kilóg esetlegesen forgatáskor (csak felül (alul nem?)) az szimplán ne látszódjon (balról és jobbról ha kilógna forgatás után akkor nem engedjük forgatni)
-	// gyorsuljon a pontok növekedésével
 	// SPACE-re azonnal lemegy, lefelé csak begyorsít (és azonnal reagál, nincs 1 másodperces delay)
+	// gyorsuljon a pontok növekedésével
 	// GAME OVER felirat + indulóképernyő
 	// különböző színű blokkok
 
@@ -43,7 +40,7 @@ public final class TetrisGame implements Runnable {
 				break;
 			}
 			nextBlock = getRandomBlock();
-			mainWindow.getNextBlockTextArea().setText(nextBlock.toString());
+			mainWindow.getNextBlockTextArea().setText(createStringFrom(nextBlock.toDrawBuffer()));
 			do {
 				draw();
 				sleep();
@@ -65,8 +62,19 @@ public final class TetrisGame implements Runnable {
 		return new Block(level.getLevel(), randomBlockType);
 	}
 
+	private String createStringFrom(String[][] drawBuffer) {
+		StringBuilder builder = new StringBuilder();
+		for (int row = 0; row < drawBuffer.length; row++) {
+			for (int column = 0; column < drawBuffer[0].length; column++) {
+				builder.append(MiniBlock.BLOCK.equals(drawBuffer[row][column]) ? MiniBlock.BLOCK : "  ");
+			}
+			builder.append("\n");
+		}
+		return builder.toString();
+	}
+
 	private void draw() {
-		mainWindow.getGameArea().setText(level.toString(block));
+		mainWindow.getGameArea().setText(createStringFrom(level.draw(block)));
 	}
 
 	private void sleep() {

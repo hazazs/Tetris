@@ -3,7 +3,6 @@ package hu.hazazs.tetris;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public final class Block {
 
@@ -73,6 +72,14 @@ public final class Block {
 		}
 	}
 
+	String[][] toDrawBuffer() {
+		String[][] drawBuffer = new String[2][4];
+		for (MiniBlock miniBlock : miniBlocks) {
+			drawBuffer[0 + miniBlock.getRowOffset()][1 + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
+		}
+		return drawBuffer;
+	}
+
 	String[][] drawIntoCopy() {
 		String[][] copy = Arrays.stream(level).map(String[]::clone).toArray(String[][]::new);
 		for (MiniBlock miniBlock : miniBlocks) {
@@ -134,22 +141,6 @@ public final class Block {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public String toString() {
-		String[][] drawBuffer = new String[2][4];
-		for (MiniBlock miniBlock : miniBlocks) {
-			drawBuffer[0 + miniBlock.getRowOffset()][1 + miniBlock.getColumnOffset()] = MiniBlock.BLOCK;
-		}
-		StringBuilder builder = new StringBuilder();
-		for (int row = 0; row < drawBuffer.length; row++) {
-			for (int column = 0; column < drawBuffer[0].length; column++) {
-				builder.append(Objects.isNull(drawBuffer[row][column]) ? "  " : drawBuffer[row][column]);
-			}
-			builder.append("\n");
-		}
-		return builder.toString();
 	}
 
 }

@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -89,7 +88,7 @@ public final class MainWindow {
 		gameArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent keyEvent) {
-				if (Objects.nonNull(tetrisGame)) {
+				if (!"START".equals(controlButton.getText())) {
 					switch (keyEvent.getKeyCode()) {
 						case KeyEvent.VK_LEFT:
 							tetrisGame.moveBlockToTheLeft();

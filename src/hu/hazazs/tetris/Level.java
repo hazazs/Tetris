@@ -1,7 +1,5 @@
 package hu.hazazs.tetris;
 
-import java.util.Objects;
-
 public final class Level {
 
 	static final int WIDTH = 10;
@@ -12,16 +10,8 @@ public final class Level {
 		return level;
 	}
 
-	String toString(Block block) {
-		String[][] copy = block.drawIntoCopy();
-		StringBuilder builder = new StringBuilder();
-		for (int row = 0; row < HEIGHT; row++) {
-			for (int column = 0; column < WIDTH; column++) {
-				builder.append(Objects.isNull(copy[row][column]) ? "  " : copy[row][column]);
-			}
-			builder.append("\n");
-		}
-		return builder.toString();
+	String[][] draw(Block block) {
+		return block.drawIntoCopy();
 	}
 
 	int checkFullRows() {
