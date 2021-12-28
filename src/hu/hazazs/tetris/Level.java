@@ -4,14 +4,14 @@ public final class Level {
 
 	static final int WIDTH = 10;
 	static final int HEIGHT = 18;
-	private final String[][] level = new String[HEIGHT][WIDTH];
+	private String[][] level = new String[HEIGHT][WIDTH];
 
 	String[][] getLevel() {
 		return level;
 	}
 
-	String[][] draw(Block block) {
-		return block.drawIntoCopy();
+	void setLevel(String[][] level) {
+		this.level = level;
 	}
 
 	int checkFullRows() {

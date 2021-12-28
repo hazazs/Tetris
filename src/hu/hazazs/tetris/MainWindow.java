@@ -94,13 +94,14 @@ public final class MainWindow {
 							tetrisGame.rotate();
 							break;
 						case KeyEvent.VK_LEFT:
-							tetrisGame.moveBlockToTheLeft();
-							break;
-						case KeyEvent.VK_RIGHT:
-							tetrisGame.moveBlockToTheRight();
+							tetrisGame.moveLeft();
 							break;
 						case KeyEvent.VK_DOWN:
-							tetrisGame.dropBlock();
+							tetrisGame.drop();
+							break;
+						case KeyEvent.VK_RIGHT:
+							tetrisGame.moveRight();
+							break;
 					}
 				}
 			}
