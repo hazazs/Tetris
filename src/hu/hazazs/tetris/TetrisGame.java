@@ -4,16 +4,21 @@ import java.util.Random;
 
 public final class TetrisGame implements Runnable {
 
-	// forgatás logika (felfelé gombra forgat)
-	// ami kilóg esetlegesen forgatáskor (csak felül (alul nem?)) az szimplán ne látszódjon (balról és jobbról ha kilógna forgatás után akkor nem engedjük forgatni)
+	// a canRotatebe felhasználni az eddigieket (balra, jobbra, lent) ? / a vizsgálatokat átvinni TetrisGame-be (lehet nem is kell tudnia a blocknak a pályáról)
+	// Block osztály absztraktá tétele (randomizálás statikus factory metódussal)
+	// blokkmásolásnak van értelme?
+	// row >= 0 equals (4)
+	// közös Z és Z_MIRRORED forgási logika
+
 	// SPACE-re azonnal lemegy, lefelé csak begyorsít (és azonnal reagál, nincs 1 másodperces delay)
-	// gyorsuljon a pontok növekedésével
-	// GAME OVER felirat + indulóképernyő
-	// különböző színű blokkok
+	// gyorsuljon a pontok növekedésével (kezdő sebesség)
+	// indulóképernyő + GAME OVER felirat + score
+	// különböző színű blokkok (1.2)
+	// CTRL+SHIFT O,F,S mindenhol
 
 	// miért alacsonyabbak az első sorok mind a gameAreaban, mind a nextBlockTextAreaban? (vagy a többi hosszabb ?)
 	// miért lesz darabos a nextBlock kijelöléskor? (eleve nem is lehetne kijelölni)
-	// valahogy a isBlockedFromTheLeft-Right hasReachedTheBottom metódusokat egybegyúrni, kiemelni valami absztrakciót (interface + execute())
+	// valahogy a isBlockedFromTheLeft-Right hasReachedTheBottom metódusokat egybegyúrni, kiemelni valami absztrakciót (interface + execute()) (meg a Blockban még ezt azt)
 
 	private final MainWindow mainWindow;
 	private final Level level;
@@ -105,6 +110,15 @@ public final class TetrisGame implements Runnable {
 				break;
 		}
 		mainWindow.getScoreTextField().setText(String.valueOf(score));
+	}
+
+	void rotate() {
+//		if (!drop && !pause) {
+			if (block.canRotate()) {
+				block.rotate();
+				draw();
+			}
+//		}
 	}
 
 	void moveBlockToTheLeft() {

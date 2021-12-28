@@ -90,6 +90,9 @@ public final class MainWindow {
 			public void keyPressed(KeyEvent keyEvent) {
 				if (!"START".equals(controlButton.getText())) {
 					switch (keyEvent.getKeyCode()) {
+						case KeyEvent.VK_UP:
+							tetrisGame.rotate();
+							break;
 						case KeyEvent.VK_LEFT:
 							tetrisGame.moveBlockToTheLeft();
 							break;
