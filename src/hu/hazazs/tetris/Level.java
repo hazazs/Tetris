@@ -10,10 +10,6 @@ public final class Level {
 		return level;
 	}
 
-	void setLevel(String[][] level) {
-		this.level = level;
-	}
-
 	int checkFullRows() {
 		int fullRowCounter = 0;
 		for (int row = 0; row < Level.HEIGHT; row++) {

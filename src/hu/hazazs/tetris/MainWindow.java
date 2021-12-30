@@ -88,7 +88,7 @@ public final class MainWindow {
 		gameArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent keyEvent) {
-				if (!"START".equals(controlButton.getText())) {
+				if ("PAUSE".equals(controlButton.getText())) {
 					switch (keyEvent.getKeyCode()) {
 						case KeyEvent.VK_UP:
 							tetrisGame.rotate();
