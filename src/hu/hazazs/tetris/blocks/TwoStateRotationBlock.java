@@ -4,6 +4,11 @@ abstract class TwoStateRotationBlock extends Block {
 
 	boolean clockwise;
 
+	Block copy(TwoStateRotationBlock original, TwoStateRotationBlock copy) {
+		copy.clockwise = original.clockwise;
+		return super.copy(original, copy);
+	}
+
 	@Override
 	public Block rotate() {
 		if (clockwise) {

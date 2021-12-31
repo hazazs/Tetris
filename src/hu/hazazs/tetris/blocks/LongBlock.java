@@ -13,9 +13,7 @@ final class LongBlock extends TwoStateRotationBlock {
 
 	@Override
 	public Block copy() {
-		TwoStateRotationBlock copy = new LongBlock();
-		copy.clockwise = this.clockwise;
-		return copy(this, copy);
+		return copy(this, new LongBlock());
 	}
 
 }

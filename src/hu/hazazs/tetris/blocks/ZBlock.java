@@ -13,9 +13,7 @@ final class ZBlock extends TwoStateRotationBlock {
 
 	@Override
 	public Block copy() {
-		TwoStateRotationBlock copy = new ZBlock();
-		copy.clockwise = this.clockwise;
-		return copy(this, copy);
+		return copy(this, new ZBlock());
 	}
 
 }

@@ -13,9 +13,7 @@ final class ZMirroredBlock extends TwoStateRotationBlock {
 
 	@Override
 	public Block copy() {
-		TwoStateRotationBlock copy = new ZMirroredBlock();
-		copy.clockwise = this.clockwise;
-		return copy(this, copy);
+		return copy(this, new ZMirroredBlock());
 	}
 
 }
