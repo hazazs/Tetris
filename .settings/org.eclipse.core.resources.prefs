@@ -1,5 +1,12 @@
 eclipse.preferences.version=1
-encoding//src/hu/hazazs/tetris/Block.java=UTF-8
 encoding//src/hu/hazazs/tetris/Level.java=UTF-8
-encoding//src/hu/hazazs/tetris/MiniBlock.java=UTF-8
 encoding//src/hu/hazazs/tetris/TetrisGame.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/Block.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/LBlock.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/LMirroredBlock.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/LongBlock.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/MiniBlock.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/SquareBlock.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/TBlock.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/ZBlock.java=UTF-8
+encoding//src/hu/hazazs/tetris/blocks/ZMirroredBlock.java=UTF-8

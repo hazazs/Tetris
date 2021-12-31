@@ -1,9 +1,10 @@
 package hu.hazazs.tetris;
 
 import java.util.Arrays;
-import java.util.Random;
+import hu.hazazs.tetris.blocks.Block;
+import hu.hazazs.tetris.blocks.MiniBlock;
 
-public final class TetrisGame implements Runnable {
+final class TetrisGame implements Runnable {
 
 	// Block osztály absztraktá tétele (randomizálás statikus factory metódussal)
 	// közös Z és Z_MIRRORED forgási logika
@@ -31,7 +32,7 @@ public final class TetrisGame implements Runnable {
 	TetrisGame(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		level = new Level();
-		nextBlock = getRandomBlock();
+		nextBlock = Block.random();
 		mainWindow.setTetrisGame(this);
 	}
 
@@ -44,7 +45,7 @@ public final class TetrisGame implements Runnable {
 				mainWindow.getNextBlockTextArea().setText("");
 				break;
 			}
-			nextBlock = getRandomBlock();
+			nextBlock = Block.random();
 			mainWindow.getNextBlockTextArea().setText(createStringFrom(nextBlock.toDrawBuffer()));
 			do {
 				draw();
@@ -57,11 +58,6 @@ public final class TetrisGame implements Runnable {
 		}
 		mainWindow.getControlButton().setText("RESTART");
 		mainWindow.getGameArea().requestFocusInWindow();
-	}
-
-	private Block getRandomBlock() {
-		BlockType randomBlockType = BlockType.values()[new Random().nextInt(BlockType.values().length)];
-		return new Block(randomBlockType);
 	}
 
 	private boolean hasReachedTheBottom() {
@@ -149,17 +145,17 @@ public final class TetrisGame implements Runnable {
 	}
 
 	void rotate() {
-		if (!drop && !pause && canRotate()) {
+		if (!drop && canRotate()) {
 			block.rotate();
 			draw();
 		}
 	}
 
 	private boolean canRotate() {
-		for (MiniBlock miniBlock : block.getMiniBlocks()) {
-			MiniBlock testMiniBlock = miniBlock.rotate(block.getRotateLogic());
-			int row = block.getRow() + testMiniBlock.getRowOffset();
-			int column = block.getColumn() + testMiniBlock.getColumnOffset();
+		Block clone = block.copy().rotate();
+		for (MiniBlock miniBlock : clone.getMiniBlocks()) {
+			int row = clone.getRow() + miniBlock.getRowOffset();
+			int column = clone.getColumn() + miniBlock.getColumnOffset();
 			if (row > Level.HEIGHT - 1 || column < 0 || column > Level.WIDTH - 1 || isBlock(row, column)) {
 				return false;
 			}
@@ -168,7 +164,7 @@ public final class TetrisGame implements Runnable {
 	}
 
 	void moveLeft() {
-		if (!drop && !pause && !isBlockedFromTheLeft()) {
+		if (!drop && !isBlockedFromTheLeft()) {
 			block.moveLeft();
 			draw();
 		}
@@ -192,7 +188,7 @@ public final class TetrisGame implements Runnable {
 	}
 
 	void moveRight() {
-		if (!drop && !pause && !isBlockedFromTheRight()) {
+		if (!drop && !isBlockedFromTheRight()) {
 			block.moveRight();
 			draw();
 		}

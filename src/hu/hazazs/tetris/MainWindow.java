@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
-public final class MainWindow {
+final class MainWindow {
 
 	private final JFrame frame = new JFrame();
 	private final JTextArea gameArea = new JTextArea();

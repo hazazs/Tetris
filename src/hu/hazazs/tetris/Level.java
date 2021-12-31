@@ -1,6 +1,8 @@
 package hu.hazazs.tetris;
 
-public final class Level {
+import hu.hazazs.tetris.blocks.MiniBlock;
+
+final class Level {
 
 	static final int WIDTH = 10;
 	static final int HEIGHT = 18;
