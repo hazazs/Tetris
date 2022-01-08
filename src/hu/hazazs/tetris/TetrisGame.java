@@ -6,20 +6,12 @@ import hu.hazazs.tetris.blocks.MiniBlock;
 
 final class TetrisGame implements Runnable {
 
-	// Block osztály absztraktá tétele (randomizálás statikus factory metódussal)
-	// közös Z és Z_MIRRORED forgási logika
-
-	// SPACE-re azonnal lemegy, lefelé csak begyorsít (és azonnal reagál, nincs 1 másodperces delay) (moveDown-ba esetleg feltételként pluszba a !hasReachedBottom hogy többszöri lenyomásra ne menjen bele a pályába)
-	// gyorsuljon a pontok növekedésével (kezdő sebesség)
-	// indulóképernyő + GAME OVER felirat (a gameover felirat esetén már lehet nem kell visszaadni a focust a gameareanak) + score
-	// különböző színű blokkok (1.2)
-	// fantommozgás mindenhol? + isValid() metódus az isBlock() helyett (a fantom után a drawBlock és buildBlock metódust egybe lehet gyúrni) (buildBlocknál már nem fog kelleni a row - 1)
-	// CTRL+SHIFT O,F,S mindenhol
-	// mit lehet még összegyúrni?
+	// gyorsuljon a pontok növekedésével (kezdő sebesség) (0.92)
+	// indulóképernyő + GAME OVER felirat vagy animáció (a gameover felirat esetén már lehet nem kell visszaadni a focust a gameareanak) + score (1.0)
+	// különböző színű blokkok (2.0)
 
 	// miért alacsonyabbak az első sorok mind a gameAreaban, mind a nextBlockTextAreaban? (vagy a többi hosszabb ?  - a fontméret ezt indokolná)
 	// miért lesz darabos a nextBlock kijelöléskor? (eleve nem is lehetne kijelölni)
-	// valahogy a isBlockedFromTheLeft-Right hasReachedTheBottom metódusokat egybegyúrni (+ canRotate esetleg), kiemelni valami absztrakciót (interface + execute()) (meg a Blockban még ezt azt)
 
 	private final MainWindow mainWindow;
 	private final Level level;
@@ -39,56 +31,31 @@ final class TetrisGame implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			block = nextBlock;
-			if (hasReachedTheBottom()) {
+			if (!isValid(block = nextBlock)) {
 				draw();
 				mainWindow.getNextBlockTextArea().setText("");
 				break;
 			}
 			nextBlock = Block.random();
 			mainWindow.getNextBlockTextArea().setText(createStringFrom(nextBlock.toDrawBuffer()));
-			do {
+			drop = false;
+			while (true) {
 				draw();
 				sleep();
+				if (!canMoveDown()) {
+					break;
+				}
 				moveDown();
-			} while (!hasReachedTheBottom());
-			buildBlockIntoTheLevel();
+			}
+			buildBlockIntoLevel();
 			scoreBy(level.checkFullRows());
-			drop = false;
 		}
 		mainWindow.getControlButton().setText("RESTART");
 		mainWindow.getGameArea().requestFocusInWindow();
 	}
 
-	private boolean hasReachedTheBottom() {
-		for (MiniBlock miniBlock : block.getMiniBlocks()) {
-			int row = block.getRow() + miniBlock.getRowOffset();
-			int column = block.getColumn() + miniBlock.getColumnOffset();
-			if (row == Level.HEIGHT || isBlock(row, column)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isBlock(int row, int column) {
-		return row >= 0 && MiniBlock.BLOCK.equals(level.getLevel()[row][column]);
-	}
-
 	private void draw() {
-		mainWindow.getGameArea().setText(createStringFrom(drawBlockIntoTheLevel()));
-	}
-
-	private String[][] drawBlockIntoTheLevel() {
-		String[][] copy = Arrays.stream(level.getLevel()).map(String[]::clone).toArray(String[][]::new);
-		for (MiniBlock miniBlock : block.getMiniBlocks()) {
-			int row = block.getRow() + miniBlock.getRowOffset();
-			int column = block.getColumn() + miniBlock.getColumnOffset();
-			if (row >= 0) {
-				copy[row][column] = MiniBlock.BLOCK;
-			}
-		}
-		return copy;
+		mainWindow.getGameArea().setText(createStringFrom(drawBlockIntoLevel()));
 	}
 
 	private String createStringFrom(String[][] drawBuffer) {
@@ -102,25 +69,31 @@ final class TetrisGame implements Runnable {
 		return builder.toString();
 	}
 
-	private void sleep() {
-		try {
-			Thread.sleep(drop ? 100 : 1_000L);
-		} catch (InterruptedException exception) {
-			exception.printStackTrace();
-		}
+	private String[][] drawBlockIntoLevel() {
+		String[][] copy = Arrays.stream(level.getLevel()).map(String[]::clone).toArray(String[][]::new);
+		return buildBlockInto(copy);
 	}
 
-	private void moveDown() {
-		if (!pause) {
-			block.moveDown();
-		}
+	private void buildBlockIntoLevel() {
+		buildBlockInto(level.getLevel());
 	}
 
-	private void buildBlockIntoTheLevel() {
+	private String[][] buildBlockInto(String[][] level) {
 		for (MiniBlock miniBlock : block.getMiniBlocks()) {
 			int row = block.getRow() + miniBlock.getRowOffset();
 			int column = block.getColumn() + miniBlock.getColumnOffset();
-			level.getLevel()[row - 1][column] = MiniBlock.BLOCK;
+			if (row >= 0) {
+				level[row][column] = MiniBlock.BLOCK;
+			}
+		}
+		return level;
+	}
+
+	private void sleep() {
+		try {
+			Thread.sleep(1_000L);
+		} catch (InterruptedException exception) {
+			exception.printStackTrace();
 		}
 	}
 
@@ -152,57 +125,59 @@ final class TetrisGame implements Runnable {
 	}
 
 	private boolean canRotate() {
-		Block clone = block.copy().rotate();
-		for (MiniBlock miniBlock : clone.getMiniBlocks()) {
-			int row = clone.getRow() + miniBlock.getRowOffset();
-			int column = clone.getColumn() + miniBlock.getColumnOffset();
-			if (row > Level.HEIGHT - 1 || column < 0 || column > Level.WIDTH - 1 || isBlock(row, column)) {
+		return isValid(block.copy().rotate());
+	}
+
+	void moveLeft() {
+		if (!drop && canMoveLeft()) {
+			block.moveLeft();
+			draw();
+		}
+	}
+
+	private boolean canMoveLeft() {
+		return isValid(block.copy().moveLeft());
+	}
+
+	void moveDown() {
+		if (!pause && canMoveDown()) {
+			block.moveDown();
+			draw();
+		}
+	}
+
+	private boolean canMoveDown() {
+		return isValid(block.copy().moveDown());
+	}
+
+	void moveRight() {
+		if (!drop && canMoveRight()) {
+			block.moveRight();
+			draw();
+		}
+	}
+
+	private boolean canMoveRight() {
+		return isValid(block.copy().moveRight());
+	}
+
+	private boolean isValid(Block block) {
+		for (MiniBlock miniBlock : block.getMiniBlocks()) {
+			int row = block.getRow() + miniBlock.getRowOffset();
+			int column = block.getColumn() + miniBlock.getColumnOffset();
+			if (column < 0 || column > Level.WIDTH - 1 || row > Level.HEIGHT - 1
+					|| (row >= 0 && MiniBlock.BLOCK.equals(level.getLevel()[row][column]))) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	void moveLeft() {
-		if (!drop && !isBlockedFromTheLeft()) {
-			block.moveLeft();
-			draw();
-		}
-	}
-
-	private boolean isBlockedFromTheLeft() {
-		for (MiniBlock miniBlock : block.getMiniBlocks()) {
-			int row = block.getRow() + miniBlock.getRowOffset();
-			int column = block.getColumn() + miniBlock.getColumnOffset();
-			if (column == 0 || isBlock(row, column - 1)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	void drop() {
-		if (!pause) {
-			drop = true;
+		drop = true;
+		while (canMoveDown()) {
+			moveDown();
 		}
-	}
-
-	void moveRight() {
-		if (!drop && !isBlockedFromTheRight()) {
-			block.moveRight();
-			draw();
-		}
-	}
-
-	private boolean isBlockedFromTheRight() {
-		for (MiniBlock miniBlock : block.getMiniBlocks()) {
-			int row = block.getRow() + miniBlock.getRowOffset();
-			int column = block.getColumn() + miniBlock.getColumnOffset();
-			if (column == Level.WIDTH - 1 || isBlock(row, column + 1)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	void pauseAndResume() {

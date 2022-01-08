@@ -58,6 +58,7 @@ public abstract class Block {
 	Block copy(Block original, Block copy) {
 		copy.row = original.row;
 		copy.column = original.column;
+		copy.miniBlocks.clear();
 		for (MiniBlock miniBlock : original.getMiniBlocks()) {
 			copy.miniBlocks.add(new MiniBlock(miniBlock));
 		}
@@ -81,16 +82,19 @@ public abstract class Block {
 		}
 	}
 
-	public void moveLeft() {
+	public Block moveLeft() {
 		column--;
+		return this;
 	}
 
-	public void moveDown() {
+	public Block moveDown() {
 		row++;
+		return this;
 	}
 
-	public void moveRight() {
+	public Block moveRight() {
 		column++;
+		return this;
 	}
 
 }

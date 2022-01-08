@@ -80,7 +80,7 @@ final class MainWindow {
 		frame.setBounds(100, 100, 487, 699);
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("src/ico.png"));
-		frame.setTitle("Tetris 1.0");
+		frame.setTitle("Tetris 0.9");
 
 		gameArea.setEditable(false);
 		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
@@ -97,10 +97,13 @@ final class MainWindow {
 							tetrisGame.moveLeft();
 							break;
 						case KeyEvent.VK_DOWN:
-							tetrisGame.drop();
+							tetrisGame.moveDown();
 							break;
 						case KeyEvent.VK_RIGHT:
 							tetrisGame.moveRight();
+							break;
+						case ' ':
+							tetrisGame.drop();
 							break;
 					}
 				}
@@ -134,7 +137,7 @@ final class MainWindow {
 						break;
 					case "RESTART":
 						startGame();
-						gameArea.setEnabled(true);
+						scoreTextField.setText("0");
 						controlButton.setText("PAUSE");
 						break;
 				}
