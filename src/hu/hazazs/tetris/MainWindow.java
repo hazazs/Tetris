@@ -1,7 +1,7 @@
 package hu.hazazs.tetris;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,10 +11,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executors;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -24,6 +29,7 @@ final class MainWindow {
 
 	private final JFrame frame = new JFrame();
 	private final JTextArea gameArea = new JTextArea();
+	private final JLayeredPane panel = new JLayeredPane();
 	private final JButton controlButton = new JButton("START");
 	private final JTextField scoreTextField = new JTextField("0");
 	private final JTextArea nextBlockTextArea = new JTextArea();
@@ -57,6 +63,10 @@ final class MainWindow {
 		return gameArea;
 	}
 
+	JLayeredPane getPanel() {
+		return panel;
+	}
+
 	JButton getControlButton() {
 		return controlButton;
 	}
@@ -80,8 +90,15 @@ final class MainWindow {
 		frame.setBounds(100, 100, 487, 699);
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("src/ico.png"));
-		frame.setTitle("Tetris 0.9");
+		frame.setTitle("Tetris 0.98");
+		frame.getContentPane().setLayout(null);
 
+		panel.setBounds(0, 270, 340, 120);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		addImageOnPanel("src/tetris.jpg");
+		frame.getContentPane().add(panel);
+
+		gameArea.setBounds(0, 0, 340, 660);
 		gameArea.setEditable(false);
 		gameArea.setFont(new Font("Consolas", Font.BOLD, 31));
 		gameArea.setHighlighter(null);
@@ -109,21 +126,24 @@ final class MainWindow {
 				}
 			}
 		});
-		frame.getContentPane().add(gameArea, BorderLayout.CENTER);
+		frame.getContentPane().add(gameArea);
 
 		GridBagLayout gbl_sidePanel = new GridBagLayout();
 		gbl_sidePanel.columnWidths = new int[] { 131 };
 		gbl_sidePanel.rowHeights = new int[] { 60, 15, 30, 30, 100, 0 };
 		gbl_sidePanel.columnWeights = new double[] { 0.0 };
 		gbl_sidePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
+
 		JPanel sidePanel = new JPanel(gbl_sidePanel);
-		frame.getContentPane().add(sidePanel, BorderLayout.EAST);
+		sidePanel.setBounds(340, 0, 131, 660);
+		frame.getContentPane().add(sidePanel);
 
 		controlButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				switch (controlButton.getText()) {
 					case "START":
+						switchPanelToGameOver();
 						startGame();
 						controlButton.setText("PAUSE");
 						break;
@@ -186,6 +206,19 @@ final class MainWindow {
 		gbc_nextBlockTextArea.gridx = 0;
 		gbc_nextBlockTextArea.gridy = 4;
 		sidePanel.add(nextBlockTextArea, gbc_nextBlockTextArea);
+	}
+
+	private void switchPanelToGameOver() {
+		panel.remove(0);
+		addImageOnPanel("src/game_over.jpg");
+	}
+
+	private void addImageOnPanel(String path) {
+		try {
+			panel.add(new JLabel(new ImageIcon(ImageIO.read(new File(path)))));
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
 	}
 
 	private void startGame() {

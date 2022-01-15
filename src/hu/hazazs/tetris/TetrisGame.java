@@ -6,12 +6,12 @@ import hu.hazazs.tetris.blocks.MiniBlock;
 
 final class TetrisGame implements Runnable {
 
-	// gyorsuljon a pontok növekedésével (kezdő sebesség) (0.92)
-	// indulóképernyő + GAME OVER felirat vagy animáció (a gameover felirat esetén már lehet nem kell visszaadni a focust a gameareanak) + score (1.0)
+	// indulóképernyő + GAME OVER felirat vagy animáció (a gameover felirat esetén már lehet nem kell visszaadni a focust a gameareanak) + score (0.98)
+	// gyorsuljon a pontok növekedésével (kezdő sebesség) (1.0)
 	// különböző színű blokkok (2.0)
 
-	// miért alacsonyabbak az első sorok mind a gameAreaban, mind a nextBlockTextAreaban? (vagy a többi hosszabb ?  - a fontméret ezt indokolná)
-	// miért lesz darabos a nextBlock kijelöléskor? (eleve nem is lehetne kijelölni)
+	// sorköz, gameOver kép szétesik, ha belejelölünk
+	// ablakfejléc ne fehér legyen
 
 	private final MainWindow mainWindow;
 	private final Level level;
@@ -41,7 +41,7 @@ final class TetrisGame implements Runnable {
 			drop = false;
 			while (true) {
 				draw();
-				sleep();
+				sleep(1_000L);
 				if (!canMoveDown()) {
 					break;
 				}
@@ -51,7 +51,7 @@ final class TetrisGame implements Runnable {
 			scoreBy(level.checkFullRows());
 		}
 		mainWindow.getControlButton().setText("RESTART");
-		mainWindow.getGameArea().requestFocusInWindow();
+		gameOverAnimation();
 	}
 
 	private void draw() {
@@ -89,9 +89,9 @@ final class TetrisGame implements Runnable {
 		return level;
 	}
 
-	private void sleep() {
+	private void sleep(long milliseconds) {
 		try {
-			Thread.sleep(1_000L);
+			Thread.sleep(milliseconds);
 		} catch (InterruptedException exception) {
 			exception.printStackTrace();
 		}
@@ -171,6 +171,27 @@ final class TetrisGame implements Runnable {
 			}
 		}
 		return true;
+	}
+
+	private void gameOverAnimation() {
+		mainWindow.getControlButton().setEnabled(false);
+		for (int row = Level.HEIGHT - 1; row >= 0; row--) {
+			for (int column = 0; column < Level.WIDTH; column++) {
+				level.getLevel()[row][column] = MiniBlock.BLOCK;
+				draw();
+			}
+			sleep(100L);
+		}
+		block.getMiniBlocks().clear();
+		for (int row = 0; row < Level.HEIGHT; row++) {
+			for (int column = 0; column < Level.WIDTH; column++) {
+				level.getLevel()[row][column] = "  ";
+				draw();
+			}
+			sleep(100L);
+		}
+		mainWindow.getControlButton().setEnabled(true);
+		mainWindow.getPanel().moveToFront(mainWindow.getGameArea());
 	}
 
 	void drop() {
