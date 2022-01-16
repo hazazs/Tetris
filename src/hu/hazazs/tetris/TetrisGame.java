@@ -6,13 +6,6 @@ import hu.hazazs.tetris.blocks.MiniBlock;
 
 final class TetrisGame implements Runnable {
 
-	// indulóképernyő + GAME OVER felirat vagy animáció (a gameover felirat esetén már lehet nem kell visszaadni a focust a gameareanak) + score (0.98)
-	// gyorsuljon a pontok növekedésével (kezdő sebesség) (1.0)
-	// különböző színű blokkok (2.0)
-
-	// sorköz, gameOver kép szétesik, ha belejelölünk
-	// ablakfejléc ne fehér legyen
-
 	private final MainWindow mainWindow;
 	private final Level level;
 	private int score;
@@ -41,7 +34,7 @@ final class TetrisGame implements Runnable {
 			drop = false;
 			while (true) {
 				draw();
-				sleep(1_000L);
+				sleep(millisecondsByScore());
 				if (!canMoveDown()) {
 					break;
 				}
@@ -52,6 +45,7 @@ final class TetrisGame implements Runnable {
 		}
 		mainWindow.getControlButton().setText("RESTART");
 		gameOverAnimation();
+		gameOverScreen();
 	}
 
 	private void draw() {
@@ -97,21 +91,34 @@ final class TetrisGame implements Runnable {
 		}
 	}
 
+	private long millisecondsByScore() {
+		if (score < 150) {
+			return 550L;
+		} else if (score < 300) {
+			return 450L;
+		} else if (score < 450) {
+			return 350L;
+		} else if (score < 600) {
+			return 250L;
+		}
+		return 150L;
+	}
+
 	private void scoreBy(int fullRowCounter) {
 		switch (fullRowCounter) {
 			case 0:
 				return;
 			case 1:
-				score += 10;
+				score += 4;
 				break;
 			case 2:
-				score += 30;
+				score += 10;
 				break;
 			case 3:
-				score += 60;
+				score += 30;
 				break;
 			case 4:
-				score += 100;
+				score += 120;
 				break;
 		}
 		mainWindow.getScoreTextField().setText(String.valueOf(score));
@@ -191,7 +198,14 @@ final class TetrisGame implements Runnable {
 			sleep(100L);
 		}
 		mainWindow.getControlButton().setEnabled(true);
-		mainWindow.getPanel().moveToFront(mainWindow.getGameArea());
+	}
+
+	private void gameOverScreen() {
+		mainWindow.getLeftPanel().removeAll();
+		mainWindow.getFinalScore().setText(String.format("SCORE: %d", score));
+		mainWindow.getLeftPanel().add(mainWindow.getFinalScore());
+		mainWindow.getLeftPanel().add(mainWindow.getGameOverLabel());
+		mainWindow.getLeftPanel().repaint();
 	}
 
 	void drop() {
